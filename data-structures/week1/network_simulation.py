@@ -53,7 +53,7 @@ def main():
     cpu_free_at = 0
 
     for packet in packets:
-        while not queue.is_empty() and queue.peek()['finish_at'] <= packet.arrived_at:
+        while not queue.is_empty() and queue.peek() <= packet.arrived_at:
             queue.dequeue()
 
         if queue.is_full():
@@ -61,10 +61,7 @@ def main():
         else:
             start_at = max(cpu_free_at, packet.arrived_at)
             finish_at = start_at + packet.duration
-            queue.enqueue({
-                'start_at': start_at,
-                'finish_at': finish_at,
-            })
+            queue.enqueue(finish_at)
             cpu_free_at = finish_at
             print(start_at)
 
