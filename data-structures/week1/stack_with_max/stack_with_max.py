@@ -1,7 +1,5 @@
 # python3
 
-import math
-
 
 class Stack:
     def __init__(self):
