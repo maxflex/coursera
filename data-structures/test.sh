@@ -1,5 +1,6 @@
-dir="week3/$1/tests/"
-app="week3/$1/$1.py"
+week="week1"
+dir="$week/$1/tests/"
+app="$week/$1/$1.py"
 for i in `seq -w $2 $2`; do
   input=$(cat "$dir$i")
   my_output=$(echo "$input" | python3 "$app")
