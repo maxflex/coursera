@@ -1,4 +1,4 @@
-week="week1"
+week="week4"
 dir="$week/$1/tests/"
 app="$week/$1/$1.py"
 for i in `seq -w $2 $2`; do
