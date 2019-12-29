@@ -6,49 +6,47 @@ class HashNode:
     def __init__(self, key=None, value=None):
         self.key = key
         self.value = value
-        self.next = None
 
 
 class Hastable:
     def __init__(self):
-        self.m = 1000
+        self.m = 10000000
         self.p = 10000019
         self.a = random.randint(0, self.p - 1)
         self.b = random.randint(1, self.p - 1)
-        self.items = [HashNode()] * self.m
+        self.items = [None] * self.m
 
     def add(self, key, value):
         index = self.h(key)
-        item = self.items[index]
-
-        while True:
-            if item.key == key:
-                item.value = value
+        while self.items[index] != None:
+            # update
+            if self.items[index].key == key:
+                self.items[index].value = value
                 return
-            if item.next is None:
-                item.next = HashNode(key, value)
-                return
-            item = item.next
+            index = self.__get_next_index(index)
+        self.items[index] = HashNode(key, value)
 
-    def get(self, key, delete=False):
+    def get(self, key):
         index = self.h(key)
-        item = self.items[index]
-
-        while item.key != key and item.next != None:
-            if delete is True:
-                prev = item
-            item = item.next
-
-        if item.key == key:
-            if delete is True:
-                prev.next = item.next
-            else:
-                return item.value
-
+        while self.items[index] != None:
+            if self.items[index].key == key:
+                return self.items[index].value
+            index = self.__get_next_index(index)
         return None
 
     def delete(self, key):
-        self.get(key, True)
+        index = self.h(key)
+        while self.items[index] != None:
+            if self.items[index].key == key:
+                self.items[index] = None
+            else:
+                index = self.__get_next_index(index)
+
+    def __get_next_index(self, index):
+        index += 1
+        if index == len(self.items):
+            index = 0
+        return index
 
     def h(self, key):
         return (self.a * key + self.b) % self.p % self.m
